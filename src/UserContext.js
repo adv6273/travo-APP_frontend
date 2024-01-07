@@ -7,6 +7,9 @@ export function UserContextProvider({children})
     const [user,setUser]=useState(null);
     const [ready,setready]= useState(false);
     const [redirect_to_homepage_after_logout,setredirect_to_homepage_after_l]= useState(false);
+    const [redirecttothatpagefromyourplaces,setredirecttothatpagefromyourplaces]= useState(false);
+    const[placeforyourplace,setplaceforyourplace]=useState([]);
+    const[detailforyourplace,setdetailforyourplace] =useState("");
     useEffect(  ()=>{
 
         if(!user)
@@ -20,7 +23,7 @@ export function UserContextProvider({children})
         }
     }, [])
     return (
-        <UserContext.Provider value={{user,setUser,ready,setredirect_to_homepage_after_l}}>
+        <UserContext.Provider value={{user,setUser,ready,setredirect_to_homepage_after_l,redirecttothatpagefromyourplaces,setredirecttothatpagefromyourplaces,detailforyourplace,setdetailforyourplace,}}>
 
             {children}
 

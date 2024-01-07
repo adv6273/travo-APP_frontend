@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
 export default function Yourplaces() {
   const [places, setPlaces] = useState([]);
-
+    const {redirecttothatpagefromyourplaces,setredirecttothatpagefromyourplaces} =useContext(UserContext);
   useEffect(() => {
     axios
       .get("http://localhost:4000/places")
@@ -15,14 +16,23 @@ export default function Yourplaces() {
         console.log("Err is ", err);
       });
   }, []);
-
+  const  handleonclick=(e)=>{
+    e.preventDefault();
+    setredirecttothatpagefromyourplaces(true);
+    // axios.get({"http://localhost:4000/places/"+e.target._id})
+  }
   return (
+
     <div className="text-center mt-4">
       {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"> */}
         <div>
         {places.length &&
           places.map((place) => (
-            <Link to={'/acounts/'} className="p-10">
+            <Link
+            // to={"http://localhost:4000/acounts/myAccommodation/new/"+place._id}
+            to={"http://localhost:3000/places/detail/"+place._id}
+            // onClick={handleonclick}
+             className="p-10">
    
     <div className=" w-full lg:max-w-full lg:flex">
       <div className="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden" 

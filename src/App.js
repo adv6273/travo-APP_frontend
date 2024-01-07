@@ -15,6 +15,8 @@ import Acounts from './components/Acounts';
 // import ProfilePage from './components/ProfilePage';
 import axios from 'axios';
 import {UserContextProvider } from './UserContext'
+import AddNewPlace from './components/AddNewPlace';
+import EditForm from './components/EditForm';
 // import { HashRouter as Router, Routes, Route } from "react-router-dom";
 // axios.defaults.baseURL="https://localhost:4000";
 axios.defaults.withCredentials=true;
@@ -37,14 +39,27 @@ function App() {
      
      <Route  exact path='/' element={<Home />} />
      {/* <Route exact path="/profile" element={<Profile />} /> */}
-     <Route exact path="/loginpage" element={<Loginpage />} />
+     {/* <Route exact path="/loginpage" element={<Loginpage />} />
      <Route exact path="/register" element={<Register/>} />
      <Route exact path="/acounts/:subpage?" element={<Acounts/>} />
      <Route exact path="/acounts/:subpage/:action" element={<Acounts/>} />
+     <Route exact path="/acounts/:subpage/:action/:id" element={<Acounts/>} /> */}
      {/* <Route exact path="/acounts/myBookings" element={<MyBookings/>} />
      <Route exact path="/acounts/myAccommodation" element={<MyAccommodation/>} /> */}
+     
+  <Route exact path='/' element={<Home />} />
+  <Route exact path="/loginpage" element={<Loginpage />} />
+  <Route exact path="/register" element={<Register />} />
+  <Route exact path="/acounts/:subpage?" element={<Acounts />} />
+  <Route exact path="/acounts/:subpage/:action" element={<Acounts />} />
+  {/* Place the /:subpage/:action/:id route below */}
+  <Route exact path="/acounts/myAccommodation/new/:id" element={<AddNewPlace />} />
+  <Route exact path = "/places/detail/:id" element={<EditForm />} />
+  {/* <Route exact path="/acounts/:subpage/:action/:id" element={<Acounts />} /> */}
+</Routes>
+
     
-  </Routes>
+  
      {/* </div> */}
 
     {/* <Header/> */}

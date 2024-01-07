@@ -1,22 +1,70 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+
+import { Navigate, useParams, useRouteError } from "react-router-dom";
+
 import axios from "axios";
 
 
-export default function AddNewPlace() {
-  const [title, settitle] = useState("");
-  const [address, setaddress] = useState("");
-  const [description, setdescription] = useState("");
-  const [addedphotos, setaddedphotos] = useState([]);
-  const [photolink, setphotolink] = useState("");
-  const [perks, setperks] = useState([]);
-  const [extrainfo, setextrainfo] = useState("");
-  const [checkin, setcheckin] = useState();
-  const [checkout, setcheckout] = useState();
-  const [maxguest, setmaxguest] = useState();
-  const [price, setprice] = useState();
-  const {id}=useParams();
+
+
+  const EditForm = () => {
+    const [mdata, setMData] = useState(null);
+  const [title, settitle] = useState('');
+
+    const [address, setaddress] = useState('');
+    const [description, setdescription] = useState('');
+  const [photolink, setphotolink] = useState('');
+
+    const [addedphotos, setaddedphotos] = useState([]);
+    const [perks, setperks] = useState([]);
+    const [extrainfo, setextrainfo] = useState('');
+    const [checkin, setcheckin] = useState('');
+    const [checkout, setcheckout] = useState('');
+    const [maxguest, setmaxguest] = useState('');
+    const [price, setprice] = useState('');
+  
+    const params = useParams();
+    const id = params.id;
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch(`http://localhost:4000/places/${id}`, {
+            method: 'GET',
+          });
+  
+          const data = await response.json();
+          setMData(data);
+        } catch (err) {
+          console.log(err.toString());
+        }
+      };
+  
+      fetchData();
+    }, [id]);
+  
+    useEffect(() => {
+      // Update form fields when mdata changes
+      if (mdata) {
+        settitle(mdata.title || '');
+        setaddress(mdata.address || '');
+        setdescription(mdata.description || '');
+        setphotolink(mdata.photolink || '')
+        setaddedphotos(mdata.addedphotos || []);
+        setperks(mdata.perks || '');
+        setextrainfo(mdata.extrainfo || '');
+        setcheckin(mdata.checkin || '');
+        setcheckout(mdata.checkout || '');
+        setmaxguest(mdata.maxguest || '');
+        setprice(mdata.price || '');
+        // Update other form fields based on your data structure
+      }
+    }, [mdata]);
+
+
   const handleCheckboxChange = (e) => {
+    e.preventDefault();
+
     const perkValue = e.target.value;
     if (e.target.checked) {
       // If the checkbox is checked, add the value to the perks array
@@ -52,26 +100,62 @@ export default function AddNewPlace() {
 
   const [redirecttomyAccommodation, setredirecttomyAccommodation] =
     useState(false);
-  const handleSubmit = async (e) => 
-  {
-    e.preventDefault();
-    // Send formData to your server or perform other actions
-    // console.log(formData);
-    if (
-      title === "" ||
-      address === "" ||
-      description === "" ||
-      checkin === "" ||
-      checkout === "" ||
-      maxguest === "" ||
-      price === ""
-    ) {
-      alert("fill required dields ");
-      return;
-    }
-    try{
 
-      const response = await axios.post("http://localhost:4000/addingplace", {
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   // Send formData to your server or perform other actions
+  //   // console.log(formData);
+  //   if (
+  //     title === "" ||
+  //     address === "" ||
+  //     description === "" ||
+  //     checkin === "" ||
+  //     checkout === "" ||
+  //     maxguest === "" ||
+  //     price === ""
+  //   ) {
+  //     alert("fill required dields ");
+  //     return;
+  //   }
+  //   try {
+  //     const response = await axios.post("http://localhost:4000/profile-update/:id", {
+  //       title,
+  //       address,
+  //       description,
+  //       addedphotos,
+  //       perks,
+  //       extrainfo,
+  //       checkin,
+  //       checkout,
+  //       maxguest,
+  //       price,
+  //     });
+  //     console.log(response);
+  //     setredirecttomyAccommodation(true);
+  //     alert("updated successfully");
+  //   } catch (err) {
+  //     alert("not added place due to error");
+  //   }
+  //   // }
+  //   // console.log("added");
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // if (
+    //   title === '' ||
+    //   address === '' ||
+    //   description === '' ||
+    //   checkin === '' ||
+    //   checkout === '' ||
+    //   maxguest === '' ||
+    //   price === ''
+    // ) {
+    //   alert('Fill in required fields');
+    //   return;
+    // }
+    try {
+      const response = await axios.post(`http://localhost:4000/profile-update/${id}`, {
         title,
         address,
         description,
@@ -85,35 +169,24 @@ export default function AddNewPlace() {
       });
       console.log(response);
       setredirecttomyAccommodation(true);
-        alert("added successfully")
+      alert('Updated successfully');
+    }  catch (err) {
+      console.error('Error updating place:', err);
+      alert('Failed to update place due to an error. Check the console for more details.');
     }
-    catch(err)
-    {
-
-      alert("not added place due to error");
-    }
-    // }
-    // console.log("added");
-    
-    
-    
-    
-    
   };
 
-  useEffect(()=>{
-      if(!id) return;
-      // axios.get('http://localhost:4000/acounts/myAccommodation/new/'+ id).then(response=>{
-      axios.get('http://localhost:4000/places/'+ id).then(response=>{
-      // axios.get('/addingplace/'+ id).then(response=>{
-        const {data}= response;
-        settitle(data.title);
+  //   useEffect(()=>{
+  //       if(!id) return;
+  //       // axios.get('http://localhost:4000/acounts/myAccommodation/new/'+ id).then(response=>{
+  //       axios.get('http://localhost:4000/places/'+ id).then(response=>{
+  //       // axios.get('/addingplace/'+ id).then(response=>{
 
-      })
-  },[id])
+  //       })
+  //   },[id])
 
   if (redirecttomyAccommodation) {
-    console.log("wwent into redirecttomyAccommodation")
+    console.log("went into redirecttomyAccommodation");
     return <Navigate to={"/acounts/myAccommodation/"} />;
   }
 
@@ -532,9 +605,11 @@ export default function AddNewPlace() {
           className="bg-primary mb-2 py-2 px-4 text-white font-semibold rounded-full shadow-lg hover:bg-primary-dark transition duration-300"
           type="submit"
         >
-          Submit
+          Update
         </button>
       </div>
     </form>
   );
-}
+};
+
+export default EditForm;

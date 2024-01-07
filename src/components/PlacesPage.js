@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import AddNewPlace from "./AddNewPlace";
 import Yourplaces from "./Yourplaces";
-
+import axios from "axios";
 export default function PlacePage() {
-  const { action } = useParams();
+  const { action ,id} = useParams();
   // console.log(action);
 
+  useEffect(()=>{
+    if(!id){
+      return;
+    }
+  
+      axios.get("http://localhost:4000/places"+id);
+    
+  },[id])
   return (
     <>
       <div>
