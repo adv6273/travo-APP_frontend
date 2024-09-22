@@ -102,7 +102,8 @@ import './App.css';
 import React from 'react';
 import Home from "./components/Home";
 import Header from "./components/Header";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Loginpage from './components/Loginpage';
 import Register from './components/Register';
 import Acounts from './components/Acounts';
@@ -123,9 +124,33 @@ import TestVideo from './components/Testvideo';
 axios.defaults.withCredentials = true;
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <>
+          <Layout/>
+          <Home />
+          
+        </>
+      )
+    },
+    {
+      path: "/about",
+      element: (
+        <>
+          <Layout/>
+          <About />
+          
+        </>
+      ),
+    }
+
+
+    ]);
   return (
     <UserContextProvider>
-      <Router>
+      {/* <Router>
         <Header />
         <Layout>
           <Routes>
@@ -144,7 +169,10 @@ function App() {
             <Route path="/test-video" element={<TestVideo />} />
           </Routes>
         </Layout>
-      </Router>
+      </Router> */}
+ 
+ <RouterProvider router={router} />
+ 
     </UserContextProvider>
   );
 }
