@@ -5,7 +5,7 @@ import Home from "./components/Home";
 // import Header from "./components/Header";
 // import Header from "./components/Header";
 import Header from "./components/Header";
-import { HashRouter as Router,Route, Routes} from "react-router-dom";
+import { BrowserRouter as Router,Route, Routes} from "react-router-dom";
 // import Profile from './components/ProfilePage';
 import Loginpage from './components/Loginpage';
 import Register from './components/Register';
